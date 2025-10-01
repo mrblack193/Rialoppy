@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: process.env.DEPLOY_ENV === 'GH_PAGES' ? '/Rialoppy/' : './',
+  base: process.env.DEPLOY_ENV === 'GH_PAGES' ? '/repo-name/' : './',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
