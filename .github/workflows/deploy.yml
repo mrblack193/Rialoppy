@@ -1,33 +1,35 @@
-name: Deploy to GitHub Pages
+name: Deploy Vite React App to GitHub Pages
 
 on:
   push:
     branches:
-      - main   # Mỗi lần push main thì sẽ deploy
-
-permissions:
-  contents: write
+      - main  # Mỗi lần bạn push code lên main thì sẽ deploy lại
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # Lấy source code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Cài Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: npm
+          cache: 'npm'
 
+      # Cài dependencies
       - name: Install dependencies
         run: npm install
 
+      # Build project
       - name: Build project
         run: npm run build
 
+      # Deploy ra branch gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
