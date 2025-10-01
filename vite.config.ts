@@ -1,11 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // rất quan trọng để tránh lỗi trắng 404 khi load JS/CSS
-  base: './',
+  base: process.env.DEPLOY_ENV === 'GH_PAGES' ? '/Rialoppy/' : './',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
