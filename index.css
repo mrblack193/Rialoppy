@@ -1,0 +1,441 @@
+
+
+html {
+  font-size: 16px; /* Establish a base for rem units */
+}
+html, body {
+  height: 100%;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.app-wrapper {
+  position: relative; /* Needed for absolute positioning of children */
+  display: flex;
+  flex-direction: column; /* Mobile-first: stack vertically */
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.game-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  max-width: 500px; /* Cap width */
+  height: auto; /* Let aspect-ratio define height */
+  max-height: 95vh; /* Ensure it fits vertically */
+  aspect-ratio: 500 / 800; /* Maintain aspect ratio */
+  border: 2px solid #333;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  background-color: #0c0c0c; /* Background for letterboxing */
+  
+  /* Flexbox to center the scalable game world */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-world {
+  width: 500px; /* Fixed width of the game logic */
+  height: 800px; /* Fixed height of the game logic */
+  position: relative;
+  overflow: hidden; /* Important for scaling */
+  transform-origin: center; /* Scale from the center */
+}
+
+
+.bird {
+  position: absolute;
+}
+
+.ground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #1a1a1a;
+  border-top: 2px solid #333;
+  display: flex;
+  justify-content: space-between; /* Đẩy logo sang trái, điểm số sang phải */
+  align-items: center;
+  padding: 0 20px; /* Thêm khoảng đệm ngang */
+  box-sizing: border-box;
+}
+
+.separator-panel {
+  width: 100%;
+  max-width: 500px; /* Match game container width on mobile */
+  min-height: 100px;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #1a1a1a;
+  border: 2px solid #333;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.score {
+  font-size: 3rem; /* Điều chỉnh kích thước để vừa vặn hơn */
+  color: white;
+  text-shadow: 2px 2px 4px #000000;
+  font-weight: bold; /* Thêm để nhấn mạnh */
+}
+
+.game-over-panel-content h2 {
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+    color: #ff4d4d;
+    text-shadow: 0 0 8px #ff4d4d;
+    font-weight: bold;
+}
+
+.game-over-panel-content p {
+  margin: 4px 0;
+  font-size: 1.1rem;
+}
+
+
+/* Container mới cho nhóm logo/văn bản */
+.footer-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-logo-image {
+  height: 4rem; /* Match font-size of the text */
+  width: auto;
+}
+
+.ground-logo-text {
+  font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+  font-weight: 900;
+  font-size: 3.2rem; /* Adjusted for longer text */
+  margin: 0;
+  letter-spacing: 0.1em; /* Adjusted for longer text */
+  text-transform: uppercase;
+  opacity: 0.9;
+  
+  /* Static glow effect */
+  color: var(--glow-color);
+  text-shadow: 0 0 8px var(--glow-color), 0 0 16px rgba(255, 255, 255, 0.4);
+}
+
+/* --- Leaderboard Styles --- */
+.leaderboard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(10, 10, 20, 0.85);
+  backdrop-filter: blur(5px);
+  color: white;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.leaderboard h2 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.leaderboard ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 80%;
+  max-width: 350px;
+}
+
+.leaderboard li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  font-size: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.leaderboard li:last-child {
+    border-bottom: none;
+}
+
+.leaderboard li span:first-child {
+    font-weight: 600;
+}
+
+.leaderboard-current-score {
+    margin-top: 2rem;
+    padding: 1rem 1.5rem;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.leaderboard-current-score h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: #aaa;
+    font-weight: normal;
+}
+
+.leaderboard-current-score p {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+/* --- Name Input Screen Styles --- */
+.name-input-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(10, 10, 20, 0.9);
+  backdrop-filter: blur(8px);
+  color: white;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  box-sizing: border-box;
+  gap: 1.5rem; /* Adjusted gap for better spacing */
+}
+
+.name-screen-logo {
+  transform: scale(1.2);
+}
+
+.name-input-screen h2 {
+  font-size: 2.2rem; /* Slightly reduced font size */
+  font-weight: bold;
+  margin-bottom: 0; /* Remove margin, use gap instead */
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--glow-color, #0ff);
+  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+  white-space: nowrap; /* Ensure it stays on a single line */
+}
+
+.name-input-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 80%;
+  max-width: 300px;
+}
+
+.name-input-field {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.name-input-field:focus {
+  outline: none;
+  border-color: var(--glow-color, #0ff);
+  box-shadow: 0 0 15px var(--glow-color, #0ff);
+}
+
+.name-input-button {
+  padding: 0.75rem 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000;
+  background-color: var(--glow-color, #0ff);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px var(--glow-color, #0ff);
+  text-transform: uppercase;
+}
+
+.name-input-button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+/* --- Ready Screen & Welcome Message --- */
+.ready-screen {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+    color: white;
+}
+
+.ready-screen h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+.welcome-message p {
+    margin: 5px 0;
+    font-size: 1.2rem;
+    color: #ccc;
+}
+.welcome-message p:first-child {
+    font-weight: bold;
+    color: white;
+}
+
+/* --- Top Right Controls (Shop, Settings) --- */
+.top-right-controls {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 30;
+  display: flex;
+  gap: 10px;
+}
+
+.control-button {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-button:hover {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: white;
+  transform: scale(1.1);
+}
+
+.control-button svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.control-button:hover svg {
+    opacity: 1;
+}
+
+/* --- Responsive Layout for larger screens --- */
+@media screen and (min-width: 900px) and (min-height: 600px) {
+  .app-wrapper {
+    flex-direction: row; /* Side-by-side layout */
+    align-items: center;
+    gap: 24px;
+  }
+
+  .game-container {
+    width: auto; /* Let height and aspect-ratio determine width */
+    height: 90vh;
+    max-height: 800px;
+  }
+
+  .separator-panel {
+    width: 300px; /* Fixed width side panel */
+    height: 90vh; /* Match game height */
+    max-height: 800px;
+    justify-content: flex-start; /* Align content to top */
+    padding-top: 4rem;
+  }
+}
+
+/* Font size adjustments for smaller devices */
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 14px; /* Scale down all rem units */
+  }
+  .score {
+    font-size: 2.5rem;
+  }
+  .ground-logo-text {
+    font-size: 2.8rem;
+  }
+  .game-over-panel-content h2 {
+    font-size: 2rem;
+  }
+  .ready-screen h2 {
+    font-size: 1.5rem;
+  }
+  .leaderboard-current-score p {
+    font-size: 2rem;
+  }
+  .footer-logo-image {
+    height: 3rem;
+  }
+  .control-button {
+    width: 36px;
+    height: 36px;
+  }
+  .top-right-controls {
+    top: 10px;
+    right: 10px;
+  }
+  .control-button svg {
+    width: 20px;
+    height: 20px;
+  }
+}
