@@ -1,15 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+// Tự động chọn base: GitHub Pages thì "/Rialoppy/", còn Vercel thì "/"
+const isGithubActions = process.env.GITHUB_ACTIONS === 'true'
+
 export default defineConfig({
   plugins: [react()],
-  base: process.env.DEPLOY_ENV === 'GH_PAGES' ? '/Rialoppy/' : './',
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-  },
-  server: {
-    port: 3000,
-    open: true,
-  },
+  base: isGithubActions ? '/Rialoppy/' : '/'
 })
