@@ -20,7 +20,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install   # dùng npm install thay cho npm ci
+        run: npm install   # 🚀 đổi từ npm ci thành npm install
 
       - name: Build project
         run: npm run build
