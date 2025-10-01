@@ -1,18 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
+// Nếu deploy trên Vercel -> base: '/' 
+// Nếu deploy GitHub Pages -> base: '/Rialoppy/'
+const isVercel = process.env.VERCEL === '1'
+
 export default defineConfig({
   plugins: [react()],
-  // 👇 rất quan trọng khi deploy GitHub Pages
-  base: '/Rialoppy/',
-
+  base: isVercel ? '/' : '/Rialoppy/',
   build: {
-    outDir: 'dist', // mặc định Vite build ra dist
-  },
-
-  server: {
-    port: 3000, // có thể chỉnh port khi dev local
-    open: true, // tự động mở trình duyệt
+    outDir: 'dist',
   },
 })
